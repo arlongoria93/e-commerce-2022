@@ -7,11 +7,10 @@ type Props = {
 };
 
 const item = ({ item, handleAddToCart }: Props) => (
-  <div>
-    <img src={item.image} alt={item.title} />
+  <div className="">
+    <img className="w-1/2" src={item.image} alt={item.title} />
     <div>
       <h2>{item.title}</h2>
-      <p>{item.description}</p>
       <h3>{item.price}</h3>
     </div>
     <button onClick={() => handleAddToCart(item)} className="btn btn-primary">
