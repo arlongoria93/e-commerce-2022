@@ -4,6 +4,7 @@ import { trpc } from "../utils/trpc";
 import { useState, useEffect } from "react";
 import Cart from "../../components/Cart/Cart";
 import Item from "../../components/item/item";
+import Footer from "../../components/Footer/Footer";
 
 export type CartItemType = {
   _id: number;
@@ -122,7 +123,9 @@ const Home: NextPage = () => {
                   />
                 ))}
               </div>
-            </div>
+            </div>{" "}
+            <div className="divider"></div>
+            <Footer />
           </div>
           <div className="drawer-side">
             <label htmlFor="my-drawer" className="drawer-overlay"></label>
