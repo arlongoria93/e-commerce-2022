@@ -3,7 +3,12 @@
 module.exports = {
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        body: ["Source Sans Pro", "sans-serif"],
+        heading: ["Source Serif Pro", "serif"],
+      },
+    },
   },
   plugins: [require("daisyui"), require("tailwind-scrollbar-hide")],
   daisyui: {

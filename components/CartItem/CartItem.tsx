@@ -9,20 +9,27 @@ type Props = {
 
 const CartItem = ({ item, addTocart, removeFromCart }: Props) => {
   return (
-    <div>
-      <div>
-        <h3>{item.title}</h3>
-        <div>
-          <p>Price:${item.price}</p>
-          <p>Total: ${(item.amount * item.price).toFixed(2)}</p>
-        </div>
-        <div>
-          <button onClick={() => removeFromCart(item.id)}>Remove</button>
-          <button onClick={() => addTocart(item)}>Add</button>
-        </div>
+    <div className="border flex flex-col">
+      <h3 className="p-4 font-heading text-lg">
+        {item.title} <span className="p-4 font-bold">x{item.amount}</span>
+      </h3>
+      <div className="font-heading  flex justify-start w-full">
+        <p className="p-4 font-bold">
+          <span className="opacity-40">Price:</span> ${item.price}
+        </p>
       </div>
-      <img src={item.image} alt={item.title} />
+      <div className="font-heading font-bold flex justify-start w-full">
+        <button className="p-4" onClick={() => removeFromCart(item._id)}>
+          Remove
+        </button>
+        <button className="p-4" onClick={() => addTocart(item)}>
+          Add
+        </button>
+      </div>
     </div>
   );
 };
 export default CartItem;
+{
+  /* <img src={item.image} alt={item.title} /> */
+}

@@ -6,7 +6,7 @@ import Cart from "../../components/Cart/Cart";
 import Item from "../../components/item/item";
 
 export type CartItemType = {
-  id: number;
+  _id: number;
   title: string;
   price: number;
   image: string;
@@ -21,9 +21,9 @@ const Home: NextPage = () => {
   const [items, setItems] = useState<CartItemType[]>([]); // items state
 
   const getItems = () => {
-    fetch("https://fakestoreapi.com/products")
-      .then((res) => res.json())
-      .then((json) => setItems(json));
+    fetch("https://api.storerestapi.com/products")
+      .then((response) => response.json())
+      .then(({ data }) => setItems(data));
   };
 
   useEffect(() => {
@@ -33,11 +33,11 @@ const Home: NextPage = () => {
   const handleAddToCart = (clickedItem: CartItemType) => {
     setCartItems((prev) => {
       // is the item already in the cart?
-      const existingItem = prev.find((item) => item.id === clickedItem.id);
+      const existingItem = prev.find((item) => item._id === clickedItem._id);
 
       if (existingItem) {
         return prev.map((item) =>
-          item.id === clickedItem.id
+          item._id === clickedItem._id
             ? { ...item, amount: item.amount + 1 }
             : item
         );
@@ -49,7 +49,7 @@ const Home: NextPage = () => {
   const handleRemoveFromCart = (id: number) => {
     setCartItems((prev) =>
       prev.reduce((acc, item) => {
-        if (item.id === id) {
+        if (item._id === id) {
           if (item.amount === 1) return acc;
           return [...acc, { ...item, amount: item.amount - 1 }];
         } else {
@@ -65,27 +65,63 @@ const Home: NextPage = () => {
 
   return (
     <>
-      <div className=" min-h-screen flex flex-col justify-center items-center p-4 scrollbar-hide ">
+      <div className="min-h-screen flex flex-col justify-center items-center p-4 scrollbar-hide ">
         <div className="drawer scrollbar-hide">
           <input id="my-drawer" type="checkbox" className="drawer-toggle" />
           <div className="drawer-content scrollbar-hide">
-            <label
-              htmlFor="my-drawer"
-              className="btn btn-primary drawer-button gap-2"
-            >
-              Cart<span className="badge">{getTotalItems(cartItems)}</span>
-            </label>
-            <div className="grid grid-cols-2 gap-12  justify-center items-center scrollbar-hide ">
-              {items?.map((item: CartItemType) => (
-                <div className=" hover:scale-101 cursor-pointer duration-500 flex flex-col justify-center items-center text-center rounded border border-info   h-full w-full p-6">
+            <div className="navbar bg-base-100">
+              <div className="flex-1">
+                <a className="btn btn-ghost normal-case text-xl">
+                  Dracula<span className="text-primary">Shopping</span>
+                </a>
+              </div>
+              <div className="flex-none gap-2">
+                <div className="form-control">
+                  <input
+                    type="text"
+                    placeholder="Search"
+                    className="input input-bordered"
+                  />
+                </div>
+                <label
+                  htmlFor="my-drawer"
+                  tabIndex={0}
+                  className="btn btn-ghost btn-circle drawer-button"
+                >
+                  <div className="indicator">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                      />
+                    </svg>
+                    <span className="badge badge-sm indicator-item">
+                      {getTotalItems(cartItems)}
+                    </span>
+                  </div>
+                </label>
+              </div>
+            </div>
+            <div className="divider"></div>
+            <div className="container max-w-3xl mx-auto">
+              <h1 className="text-2xl text-center">BODY</h1>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 justify-center">
+                {items?.map((item: CartItemType) => (
                   <Item
-                    key={item.id}
+                    key={item._id}
                     item={item}
                     handleAddToCart={handleAddToCart}
                   />
-                </div>
-              ))}
-              <div className="pt-6 text-2xl text-blue-500 flex justify-center items-center w-full"></div>
+                ))}
+              </div>
             </div>
           </div>
           <div className="drawer-side">
