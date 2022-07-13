@@ -2,6 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { trpc } from "../utils/trpc";
 import { useState, useEffect } from "react";
+import Cart from "../../components/Cart/Cart";
 import Item from "../../components/item/item";
 
 export type CartItemType = {
@@ -34,6 +35,7 @@ const Home: NextPage = () => {
   }, []);
 
   const handleAddToCart = (clickedItem: CartItemType) => null;
+  const handleRemoveFromCart = (id: number) => null;
 
   return (
     <>
@@ -63,12 +65,11 @@ const Home: NextPage = () => {
           <div className="drawer-side">
             <label htmlFor="my-drawer" className="drawer-overlay"></label>
             <ul className="menu p-4 overflow-y-auto w-80 bg-base-100 text-base-content">
-              <li>
-                <a>Sidebar Item 1</a>
-              </li>
-              <li>
-                <a>Sidebar Item 2</a>
-              </li>
+              <Cart
+                cartItems={cartItems}
+                addTocart={handleAddToCart}
+                removeFromCart={handleRemoveFromCart}
+              />
             </ul>
           </div>
         </div>
