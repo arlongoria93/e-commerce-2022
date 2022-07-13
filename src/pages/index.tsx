@@ -26,16 +26,42 @@ const Home: NextPage = () => {
       .then((json) => setItems(json));
   };
 
-  const getTotalItems = (items: CartItemType[]) => {
-    items.reduce((ack: number, item) => ack + item.amount, 0);
-  };
-
   useEffect(() => {
     getItems();
   }, []);
 
-  const handleAddToCart = (clickedItem: CartItemType) => null;
-  const handleRemoveFromCart = (id: number) => null;
+  const handleAddToCart = (clickedItem: CartItemType) => {
+    setCartItems((prev) => {
+      // is the item already in the cart?
+      const existingItem = prev.find((item) => item.id === clickedItem.id);
+
+      if (existingItem) {
+        return prev.map((item) =>
+          item.id === clickedItem.id
+            ? { ...item, amount: item.amount + 1 }
+            : item
+        );
+      }
+      // if not, add new item to cart
+      return [...prev, { ...clickedItem, amount: 1 }];
+    });
+  };
+  const handleRemoveFromCart = (id: number) => {
+    setCartItems((prev) =>
+      prev.reduce((acc, item) => {
+        if (item.id === id) {
+          if (item.amount === 1) return acc;
+          return [...acc, { ...item, amount: item.amount - 1 }];
+        } else {
+          return [...acc, item];
+        }
+      }, [] as CartItemType[])
+    );
+  };
+
+  const getTotalItems = (items: CartItemType[]) => {
+    return items.reduce((acc, item) => acc + item.amount, 0);
+  };
 
   return (
     <>
@@ -64,7 +90,7 @@ const Home: NextPage = () => {
           </div>
           <div className="drawer-side">
             <label htmlFor="my-drawer" className="drawer-overlay"></label>
-            <ul className="menu p-4 overflow-y-auto w-80 bg-base-100 text-base-content">
+            <ul className="menu p-4 overflow-y-auto w-80 bg-base-100 text-base-content scrollbar-hide">
               <Cart
                 cartItems={cartItems}
                 addTocart={handleAddToCart}

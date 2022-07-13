@@ -8,8 +8,11 @@ type Props = {
 };
 
 const Cart = ({ cartItems, addTocart, removeFromCart }: Props) => {
+  const calculateTotal = (items: CartItemType[]) => {
+    return items.reduce((acc, item) => acc + item.amount * item.price, 0);
+  };
   return (
-    <div>
+    <div className="scrollbar-hide">
       <h2>Your Shopping Cart</h2>
       {cartItems.length === 0 ? <p>No items in cart</p> : null}
       {cartItems.map((item) => (
@@ -20,6 +23,7 @@ const Cart = ({ cartItems, addTocart, removeFromCart }: Props) => {
           removeFromCart={removeFromCart}
         />
       ))}
+      <h1>Total ${calculateTotal(cartItems).toFixed(2)}</h1>
     </div>
   );
 };
